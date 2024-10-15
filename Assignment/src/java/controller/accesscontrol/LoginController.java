@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package controller.accesscontrol;
 
 import dal.UserDBContext;
@@ -20,33 +16,29 @@ public class LoginController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String user = req.getParameter("username");
-        String pass = req.getParameter("password");
+        String username = req.getParameter("username");
+        String password = req.getParameter("password");
         
         UserDBContext db = new UserDBContext();
-        User account = db.get(user, pass);
+        User account = db.get(username, password);
         
-        if(account!=null)
-        {
+        if (account != null) {
+            // Set the user account in session after successful login
             req.getSession().setAttribute("account", account);
             
-            resp.getWriter().println("login successful!");
+            // Redirect to the main JSP page with list, update, and delete options
+            req.getRequestDispatcher("dashboard.jsp").forward(req, resp);
+        } else {
+            // Redirect to a login error page or display a message on the same page
+            req.setAttribute("error", "Invalid username or password. Please try again.");
+            req.getRequestDispatcher("login.jsp").forward(req, resp);
         }
-        else
-        {
-            resp.getWriter().println("login failed!");
-        }
-        
-        String url = this.getInitParameter("url");
-        resp.getWriter().println(url);
-        
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //pre-processing
-        req.getRequestDispatcher("login.html").forward(req, resp);
-        //post-processing
+        // Pre-processing: forward the user to the login page
+        req.getRequestDispatcher("login.jsp").forward(req, resp);
     }
-    
 }
+
