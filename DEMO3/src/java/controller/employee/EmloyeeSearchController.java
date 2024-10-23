@@ -21,11 +21,11 @@ import jakarta.servlet.http.HttpServletResponse;
 public class EmloyeeSearchController extends BaseRBACController {
 
     @Override
-    protected void doAuthorizedGet(HttpServletRequest req, HttpServletResponse resp, User account) throws ServletException, IOException {
+    protected void doAuthorizedGet(HttpServletRequest request, HttpServletResponse response, User account) throws ServletException, IOException {
     }
 
     @Override
-    protected void doAuthorizedPost(HttpServletRequest req, HttpServletResponse resp, User account) throws ServletException, IOException {
+    protected void doAuthorizedPost(HttpServletRequest request, HttpServletResponse response, User account) throws ServletException, IOException {
     }
    
    

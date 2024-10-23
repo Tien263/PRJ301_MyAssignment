@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
+    <context-param>
+        <description>super admin account</description>
+        <param-name>username</param-name>
+        <param-value>sonnt5</param-value>
+    </context-param>
+    <context-param>
+        <description>super admin password</description>
+        <param-name>password</param-name>
+        <param-value>123</param-value>
+    </context-param>
     <servlet>
         <servlet-name>StudentInsertController</servlet-name>
         <servlet-class>controller.StudentInsertController</servlet-class>
@@ -10,7 +20,7 @@
         <init-param>
             <description>url to redirect after successfully logged in.</description>
             <param-name>url</param-name>
-            <param-value>Hello!!!!!1</param-value>
+            <param-value>dantri.com</param-value>
         </init-param>
     </servlet>
     <servlet>
@@ -60,6 +70,10 @@
     <servlet>
         <servlet-name>EmployeeFilterController</servlet-name>
         <servlet-class>controller.employee.EmployeeFilterController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProductionPlanCreateController</servlet-name>
+        <servlet-class>controller.productionplan.ProductionPlanCreateController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>StudentInsertController</servlet-name>
@@ -124,6 +138,10 @@
     <servlet-mapping>
         <servlet-name>EmployeeFilterController</servlet-name>
         <url-pattern>/employee/filter</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductionPlanCreateController</servlet-name>
+        <url-pattern>/productionplan/create</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>25</session-timeout>

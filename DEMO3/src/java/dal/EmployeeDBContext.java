@@ -4,7 +4,7 @@
  */
 package dal;
 
-import entity.Department;
+import entity.assignment.Department;
 import entity.Employee;
 import entity.accesscontrol.User;
 import java.util.ArrayList;
@@ -75,8 +75,8 @@ public class EmployeeDBContext extends DBContext<Employee> {
                 e.setAddress(rs.getString("address"));
 
                 Department d = new Department();
-                d.setDid(rs.getInt("did"));
-                d.setDname(rs.getString("dname"));
+                d.setId(rs.getInt("did"));
+                d.setName(rs.getString("dname"));
                 e.setDept(d);
 
                 emps.add(e);
@@ -123,7 +123,7 @@ public class EmployeeDBContext extends DBContext<Employee> {
             stm_insert.setBoolean(2, entity.isGender());
             stm_insert.setString(3, entity.getAddress());
             stm_insert.setDate(4, entity.getDob());
-            stm_insert.setInt(5, entity.getDept().getDid());
+            stm_insert.setInt(5, entity.getDept().getId());
             stm_insert.setString(6, entity.getCreatedby().getUsername());
             stm_insert.executeUpdate();
 
@@ -173,7 +173,7 @@ public class EmployeeDBContext extends DBContext<Employee> {
             stm_update.setBoolean(2, entity.isGender());
             stm_update.setString(3, entity.getAddress());
             stm_update.setDate(4, entity.getDob());
-            stm_update.setInt(5, entity.getDept().getDid());
+            stm_update.setInt(5, entity.getDept().getId());
             stm_update.setString(6, entity.getUpdatedby().getUsername());
             stm_update.setInt(7, entity.getId());
             stm_update.executeUpdate();
@@ -218,12 +218,7 @@ public class EmployeeDBContext extends DBContext<Employee> {
         ArrayList<Employee> emps = new ArrayList<>();
         PreparedStatement command = null;
         try {
-            String sql = "SELECT [eid]\n"
-                    + "      ,[ename]\n"
-                    + "      ,[gender]\n"
-                    + "      ,[address]\n"
-                    + "      ,[dob]\n"
-                    + "  FROM [Employee]";
+            String sql = "select e.eid, e.ename , e.salary_band, e.gender, e.address, e.dob, d.dname from Employee e inner join Department d on e.did = d.did";
 
             command = connection.prepareStatement(sql);
             ResultSet rs = command.executeQuery();
@@ -234,6 +229,12 @@ public class EmployeeDBContext extends DBContext<Employee> {
                 e.setGender(rs.getBoolean("gender"));
                 e.setDob(rs.getDate("dob"));
                 e.setAddress(rs.getString("address"));
+                e.setSalary(rs.getInt("salary_band"));
+
+                Department dept = new Department();
+                dept.setName(rs.getString("dname"));
+                e.setDept(dept);
+
                 emps.add(e);
             }
 
@@ -255,16 +256,12 @@ public class EmployeeDBContext extends DBContext<Employee> {
 
         PreparedStatement command = null;
         try {
-            String sql = "SELECT e.eid,e.ename,e.gender,e.dob,e.address\n"
-                    + "		,d.did,d.dname,\n"
-                    + "		e.updatedtime,\n"
-                    + "		c.username as cusername,c.displayname as cdisplayname,\n"
-                    + "		u.username as uusername, u.displayname as udisplayname\n"
-                    + "FROM Employee e \n"
-                    + "	INNER JOIN Department d ON d.did = e.did\n"
-                    + "	INNER JOIN [User] c ON c.username = e.createdby\n"
-                    + "	LEFT JOIN [User] u ON u.username = e.updatedby\n"
-                    + "	WHERE e.eid = ?";
+            String sql = "SELECT e.eid,e.ename,e.gender,e.dob,e.address ,d.did,d.dname,e.updatedtime, c.username as cusername,u.username as uusername\n"
+                    + "                    FROM Employee e \n"
+                    + "                    INNER JOIN Department d ON d.did = e.did\n"
+                    + "                   INNER JOIN [User] c ON c.username = e.createdby\n"
+                    + "                   LEFT JOIN [User] u ON u.username = e.updatedby\n"
+                    + "                   	WHERE e.eid = ?;";
 
             command = connection.prepareStatement(sql);
             command.setInt(1, id);
@@ -279,8 +276,8 @@ public class EmployeeDBContext extends DBContext<Employee> {
                 e.setUpdatedtime(rs.getTimestamp("updatedtime"));
 
                 Department d = new Department();
-                d.setDid(rs.getInt("did"));
-                d.setDname(rs.getString("dname"));
+                d.setId(rs.getInt("did"));
+                d.setName(rs.getString("dname"));
                 e.setDept(d);
 
                 User c = new User();

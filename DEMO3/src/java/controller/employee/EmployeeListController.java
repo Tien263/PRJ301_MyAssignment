@@ -35,7 +35,7 @@ public class EmployeeListController extends BaseRBACController {
         EmployeeDBContext db = new EmployeeDBContext();
         ArrayList<Employee> emps = db.list();
         request.setAttribute("emps", emps);
-        request.getRequestDispatcher("../view/employee/list.jsp").forward(request, response);
+        request.getRequestDispatcher("../view/employee/human_resources.jsp").forward(request, response);
     } 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

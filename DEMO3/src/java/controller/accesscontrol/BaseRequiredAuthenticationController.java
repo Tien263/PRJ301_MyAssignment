@@ -17,37 +17,37 @@ import java.io.IOException;
  */
 public abstract class BaseRequiredAuthenticationController extends HttpServlet {
     
-    private boolean isAuthenticated(HttpServletRequest req)
+    private boolean isAuthenticated(HttpServletRequest request)
     {
-      User user = (User)req.getSession().getAttribute("account");
+      User user = (User)request.getSession().getAttribute("account");
       return user != null;
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if(isAuthenticated(req))
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if(isAuthenticated(request))
         {
              //do business logic here
-            User user = (User)req.getSession().getAttribute("account");
-            doPost(req, resp, user);
+            User user = (User)request.getSession().getAttribute("account");
+            doPost(request, response, user);
         }
         else
-            resp.sendError(403,"You do n't have right to access");
+            response.sendError(403,"You do n't have right to access");
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if(isAuthenticated(req))
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if(isAuthenticated(request))
         {
             //do business logic here
-            User user = (User)req.getSession().getAttribute("account");
-            doGet(req, resp, user);
+            User user = (User)request.getSession().getAttribute("account");
+            doGet(request, response, user);
         }
         else
-            resp.sendError(403,"You do n't have right to access");
+            response.sendError(403,"You do n't have right to access");
     }
     
-    protected abstract void doGet(HttpServletRequest req, HttpServletResponse resp, User account) throws ServletException, IOException;
-    protected abstract void doPost(HttpServletRequest req, HttpServletResponse resp, User account) throws ServletException, IOException;
+    protected abstract void doGet(HttpServletRequest request, HttpServletResponse response, User account) throws ServletException, IOException;
+    protected abstract void doPost(HttpServletRequest request, HttpServletResponse response, User account) throws ServletException, IOException;
     
 }

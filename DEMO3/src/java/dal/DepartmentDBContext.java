@@ -4,8 +4,9 @@
  */
 package dal;
 
-import entity.Department;
-import entity.Employee;
+import dal.DBContext;
+import entity.assignment.Department;
+import entity.assignment.Type;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,7 +18,7 @@ import java.util.logging.Logger;
  *
  * @author sonnt-local
  */
-public class DepartmentDBContext extends DBContext<Department>{
+public class DepartmentDBContext extends DBContext<Department> {
 
     @Override
     public void insert(Department entity) {
@@ -45,27 +46,60 @@ public class DepartmentDBContext extends DBContext<Department>{
             ResultSet rs = command.executeQuery();
             while (rs.next()) {
                 Department d = new Department();
-                d.setDid(rs.getInt("did"));
-                d.setDname(rs.getString("dname"));
+                d.setId(rs.getInt("did"));
+                d.setName(rs.getString("dname"));
                 depts.add(d);
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(DepartmentDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(dal.DepartmentDBContext.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
                 command.close();
                 connection.close();
             } catch (SQLException ex) {
-                Logger.getLogger(DepartmentDBContext.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(dal.DepartmentDBContext.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return depts;
     }
 
+    public ArrayList<Department> get(String type) {
+    ArrayList<Department> depts = new ArrayList<>();
+    PreparedStatement command = null;
+    try {
+        String sql = "SELECT d.did, d.dname, t.tname " +
+                     "FROM Department d INNER JOIN Type t ON d.tid = t.tid " +
+                     "WHERE t.tname = ?";
+        command = connection.prepareStatement(sql);
+        command.setString(1, type);
+        ResultSet rs = command.executeQuery();
+        while (rs.next()) {
+            Department d = new Department();
+            d.setId(rs.getInt("did"));
+            d.setName(rs.getString("dname"));
+            Type t = new Type();
+            t.setName(rs.getString("tname"));
+            d.setTypes(t);
+            depts.add(d);
+        }
+    } catch (SQLException ex) {
+        Logger.getLogger(DepartmentDBContext.class.getName()).log(Level.SEVERE, null, ex);
+    } finally {
+        try {
+            if (command != null) command.close();
+            if (connection != null) connection.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DepartmentDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    return depts;
+}
+
+
     @Override
     public Department get(int id) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
 }

@@ -10,20 +10,21 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 
+
 /**
  * LoginController handles user authentication and role-based redirection.
  */
 public class LoginController extends HttpServlet {
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String username = req.getParameter("username");
-        String password = req.getParameter("password");
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
 
         // Check if username and password are not null
         if (username == null || password == null) {
-            req.setAttribute("error", "Username or password cannot be null.");
-            req.getRequestDispatcher("login.jsp").forward(req, resp);
+            request.setAttribute("error", "Username or password cannot be null.");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
             return;
         }
 
@@ -33,7 +34,7 @@ public class LoginController extends HttpServlet {
 
         // Check if the account exists and is active
         if (account != null && account.isIs_active()) {
-            req.getSession().setAttribute("account", account);
+            request.getSession().setAttribute("account", account);
 
             // Check if user has at least one role
             ArrayList<Role> roles = account.getRoles();
@@ -41,39 +42,39 @@ public class LoginController extends HttpServlet {
                 String primaryRoleName = roles.get(0).getRname(); // Use the first role for redirection
                 switch (primaryRoleName) {
                     case "Head of HRD":
-                        req.getRequestDispatcher("hrd_dashboard.jsp").forward(req, resp);
+                        request.getRequestDispatcher("hrd_dashboard.jsp").forward(request, response);
                         break;
-                    case "Recruitment Officer":
-                        req.getRequestDispatcher("dashboard.jsp").forward(req, resp);
+                    case "Human Resources Department": // Updated role name
+                        request.getRequestDispatcher("/employee/list").forward(request, response);
                         break;
                     case "Payroll Management":
-                        req.getRequestDispatcher("payroll_dashboard.jsp").forward(req, resp);
+                        request.getRequestDispatcher("payroll_dashboard.jsp").forward(request, response);
                         break;
                     case "Production Planning":
-                        req.getRequestDispatcher("production_dashboard.jsp").forward(req, resp);
+                        request.getRequestDispatcher("menupp.jsp").forward(request, response);
                         break;
                     case "Worker Allocation":
-                        req.getRequestDispatcher("worker_dashboard.jsp").forward(req, resp);
+                        request.getRequestDispatcher("worker_dashboard.jsp").forward(request, response);
                         break;
                     default:
-                        req.setAttribute("error", "Role not recognized. Please contact the administrator.");
-                        req.getRequestDispatcher("error.jsp").forward(req, resp);
+                        request.setAttribute("error", "Role not recognized. Please contact the administrator.");
+                        request.getRequestDispatcher("error.jsp").forward(request, response);
                         break;
                 }
             } else {
-                req.setAttribute("error", "No roles assigned. Please contact the administrator.");
-                req.getRequestDispatcher("error.jsp").forward(req, resp);
+                request.setAttribute("error", "No roles assigned. Please contact the administrator.");
+                request.getRequestDispatcher("error.jsp").forward(request, response);
             }
         } else {
             // Handle invalid login or inactive user
-            req.setAttribute("error", "Invalid username or password, or account is inactive.");
-            req.getRequestDispatcher("login.jsp").forward(req, resp);
+            request.setAttribute("error", "Invalid username or password, or account is inactive.");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
         }
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Forward to the login page for GET requests
-        req.getRequestDispatcher("login.jsp").forward(req, resp);
+        request.getRequestDispatcher("login.jsp").forward(request, response);
     }
 }

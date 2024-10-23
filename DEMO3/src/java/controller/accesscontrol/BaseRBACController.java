@@ -20,9 +20,9 @@ import java.util.ArrayList;
  */
 public abstract class BaseRBACController extends BaseRequiredAuthenticationController {
     
-    private boolean isAuthorized(HttpServletRequest req,User account)
+    private boolean isAuthorized(HttpServletRequest request,User account)
     {
-        String current_url  = req.getServletPath();
+        String current_url  = request.getServletPath();
         UserDBContext db = new UserDBContext();
         ArrayList<Role> roles = db.getRoles(account.getUsername());
         account.setRoles(roles);
@@ -37,16 +37,16 @@ public abstract class BaseRBACController extends BaseRequiredAuthenticationContr
         return false;
     }
     
-     protected abstract void doAuthorizedGet(HttpServletRequest req, HttpServletResponse resp, User account) throws ServletException, IOException;
-     protected abstract void doAuthorizedPost(HttpServletRequest req, HttpServletResponse resp, User account) throws ServletException, IOException;
+     protected abstract void doAuthorizedGet(HttpServletRequest request, HttpServletResponse response, User account) throws ServletException, IOException;
+     protected abstract void doAuthorizedPost(HttpServletRequest request, HttpServletResponse response, User account) throws ServletException, IOException;
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp, User account) throws ServletException, IOException {
-        if(isAuthorized(req, account))
+    protected void doGet(HttpServletRequest request, HttpServletResponse response, User account) throws ServletException, IOException {
+        if(isAuthorized(request, account))
         {
-            doAuthorizedGet(req, resp, account);
+            doAuthorizedGet(request, response, account);
         }
         else
-            resp.sendError(403, "You do not have right to access this feature!");
+            response.sendError(403, "You do not have right to access this feature!");
     
     }
 

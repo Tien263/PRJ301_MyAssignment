@@ -4,6 +4,7 @@
  */
 package entity;
 import entity.accesscontrol.User;
+import entity.assignment.Department;
 import java.sql.*;
 /**
  *

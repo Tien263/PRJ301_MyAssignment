@@ -9,7 +9,7 @@ import controller.accesscontrol.BaseRBACController;
 import controller.accesscontrol.BaseRequiredAuthenticationController;
 import dal.DepartmentDBContext;
 import dal.EmployeeDBContext;
-import entity.Department;
+import entity.assignment.Department;
 import entity.Employee;
 import entity.accesscontrol.User;
 import java.io.IOException;
@@ -28,34 +28,34 @@ import java.util.ArrayList;
 public class EmployeeUpdateController extends BaseRBACController {
 
     @Override
-    protected void doAuthorizedGet(HttpServletRequest req, HttpServletResponse resp, User account) throws ServletException, IOException {
-        int id = Integer.parseInt(req.getParameter("id"));
+    protected void doAuthorizedGet(HttpServletRequest request, HttpServletResponse response, User account) throws ServletException, IOException {
+        int id = Integer.parseInt(request.getParameter("id"));
         EmployeeDBContext db = new EmployeeDBContext();
         Employee e = db.get(id);
         if(e!=null)
         {
             DepartmentDBContext dbDept = new DepartmentDBContext();
             ArrayList<Department> depts = dbDept.list();
-            req.setAttribute("e", e);
-            req.setAttribute("depts", depts);
-            req.getRequestDispatcher("../view/employee/update.jsp").forward(req, resp);
+            request.setAttribute("e", e);
+            request.setAttribute("depts", depts);
+            request.getRequestDispatcher("../view/employee/edit.jsp").forward(request, response);
         }
         else
         {
-            resp.sendError(404,"this employee does not exist!");
+            response.sendError(404,"this employee does not exist!");
         }
     
     }
 
     @Override
-    protected void doAuthorizedPost(HttpServletRequest req, HttpServletResponse resp, User account) throws ServletException, IOException {
+    protected void doAuthorizedPost(HttpServletRequest request, HttpServletResponse response, User account) throws ServletException, IOException {
          //read parameters
-        String raw_id =req.getParameter("id");
-        String raw_name =req.getParameter("name");
-        String raw_gender = req.getParameter("gender");
-        String raw_dob = req.getParameter("dob");
-        String raw_address = req.getParameter("address");
-        String raw_did = req.getParameter("did");
+        String raw_id =request.getParameter("id");
+        String raw_name =request.getParameter("name");
+        String raw_gender = request.getParameter("gender");
+        String raw_dob = request.getParameter("dob");
+        String raw_address = request.getParameter("address");
+        String raw_did = request.getParameter("did");
         
         //validate params
         
@@ -69,7 +69,7 @@ public class EmployeeUpdateController extends BaseRBACController {
         e.setDob(Date.valueOf(raw_dob));
         
         Department d = new Department();
-        d.setDid(Integer.parseInt(raw_did));
+        d.setId(Integer.parseInt(raw_did));
         e.setDept(d);
         
         e.setUpdatedby(account);
@@ -79,7 +79,7 @@ public class EmployeeUpdateController extends BaseRBACController {
         db.update(e);
         
         //return results to user
-        resp.getWriter().println("Done");
+        response.getWriter().println("Done");
     
     
     }

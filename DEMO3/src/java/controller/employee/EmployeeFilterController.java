@@ -7,7 +7,7 @@ package controller.employee;
 
 import dal.DepartmentDBContext;
 import dal.EmployeeDBContext;
-import entity.Department;
+import entity.assignment.Department;
 import entity.Employee;
 import java.io.IOException;
 import java.io.PrintWriter;
