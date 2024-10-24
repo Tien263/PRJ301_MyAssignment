@@ -13,7 +13,7 @@ import java.io.IOException;
 
 /**
  *
- * @author sonnt-local
+ * @author xuant
  */
 public abstract class BaseRequiredAuthenticationController extends HttpServlet {
     

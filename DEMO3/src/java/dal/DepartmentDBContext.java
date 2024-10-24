@@ -5,8 +5,8 @@
 package dal;
 
 import dal.DBContext;
-import entity.assignment.Department;
-import entity.assignment.Type;
+import entity.productionplan.Department;
+import entity.productionplan.Type;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author sonnt-local
+ * @author xuant
  */
 public class DepartmentDBContext extends DBContext<Department> {
 
@@ -84,13 +84,13 @@ public class DepartmentDBContext extends DBContext<Department> {
             depts.add(d);
         }
     } catch (SQLException ex) {
-        Logger.getLogger(DepartmentDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        Logger.getLogger(dal.DepartmentDBContext.class.getName()).log(Level.SEVERE, null, ex);
     } finally {
         try {
             if (command != null) command.close();
             if (connection != null) connection.close();
         } catch (SQLException ex) {
-            Logger.getLogger(DepartmentDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(dal.DepartmentDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     return depts;

@@ -4,7 +4,7 @@
  */
 package dal;
 
-import entity.assignment.Department;
+import entity.productionplan.Department;
 import entity.Employee;
 import entity.accesscontrol.User;
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author sonnt-local
+ * @author xuant
  */
 public class EmployeeDBContext extends DBContext<Employee> {
 
@@ -102,14 +102,16 @@ public class EmployeeDBContext extends DBContext<Employee> {
                 + "				   ,[address]\n"
                 + "				   ,[dob]\n"
                 + "				   ,[did]\n"
-                + "				   ,[createdby])\n"
+                + "				   ,[createdby]\n"
+                + "				   ,[status])\n"
                 + "			 VALUES\n"
                 + "				   (?\n"
                 + "				   ,?\n"
                 + "				   ,?\n"
                 + "				   ,?\n"
                 + "				   ,?\n"
-                + "				   ,?)";
+                + "				   ,?\n"
+                + "                                ,?)";
 
         String sql_select = "SELECT @@IDENTITY as eid";
 
@@ -125,6 +127,7 @@ public class EmployeeDBContext extends DBContext<Employee> {
             stm_insert.setDate(4, entity.getDob());
             stm_insert.setInt(5, entity.getDept().getId());
             stm_insert.setString(6, entity.getCreatedby().getUsername());
+            stm_insert.setBoolean(7, entity.isStatus());
             stm_insert.executeUpdate();
 
             stm_select = connection.prepareStatement(sql_select);
@@ -150,6 +153,17 @@ public class EmployeeDBContext extends DBContext<Employee> {
             }
         }
 
+    }
+    
+    public void updateStatus(Employee employee) {
+        String sql = "UPDATE Employee SET status = ? WHERE eid = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setBoolean(1, employee.isStatus()); // Giả sử bạn có getter cho status
+            stmt.setInt(2, employee.getId());
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace(); // Xử lý ngoại lệ phù hợp hơn
+        }
     }
 
     @Override
@@ -218,7 +232,8 @@ public class EmployeeDBContext extends DBContext<Employee> {
         ArrayList<Employee> emps = new ArrayList<>();
         PreparedStatement command = null;
         try {
-            String sql = "select e.eid, e.ename , e.salary_band, e.gender, e.address, e.dob, d.dname from Employee e inner join Department d on e.did = d.did";
+            String sql = "select e.eid, e.ename , e.salary_band, e.gender, e.address, e.dob, d.dname from Employee e inner join Department d on e.did = d.did\n"
+                    + "Where e.status = 'True';";
 
             command = connection.prepareStatement(sql);
             ResultSet rs = command.executeQuery();

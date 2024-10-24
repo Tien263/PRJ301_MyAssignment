@@ -11,10 +11,10 @@ import dal.DepartmentDBContext;
 import dal.PlanDBContext;
 import dal.ProductDBContext;
 import entity.accesscontrol.User;
-import entity.assignment.Department;
-import entity.assignment.Plan;
-import entity.assignment.PlanCampain;
-import entity.assignment.Product;
+import entity.productionplan.Department;
+import entity.productionplan.Plan;
+import entity.productionplan.PlanCampaiqn;
+import entity.productionplan.Product;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -23,12 +23,14 @@ import java.sql.Date;
 
 /**
  *
- * @author sonnt-local hand-some
+ * @author xuant
  */
 public class ProductionPlanCreateController extends BaseRBACController{
 
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+     
+    
+    @Override
+    protected void doAuthorizedGet(HttpServletRequest request, HttpServletResponse response, User account) throws ServletException, IOException {
         ProductDBContext dbProduct = new ProductDBContext();
         DepartmentDBContext dbDepts = new DepartmentDBContext();
         
@@ -36,32 +38,22 @@ public class ProductionPlanCreateController extends BaseRBACController{
         request.setAttribute("depts", dbDepts.get("Workshop"));
         
         request.getRequestDispatcher("../view/productionplan/production_dashboard.jsp").forward(request, response);
-    } 
-    
-    @Override
-    protected void doAuthorizedGet(HttpServletRequest request, HttpServletResponse response, User account) throws ServletException, IOException {
-        processRequest(request, response);
     }
 
     @Override
     protected void doAuthorizedPost(HttpServletRequest request, HttpServletResponse response, User account) throws ServletException, IOException {
-//        processRequest(request, response);
-        String raw_name = request.getParameter("name");
-        String raw_start = request.getParameter("from");
-        String raw_end = request.getParameter("to");
-        String raw_did = request.getParameter("did");
-
+        
         Plan plan = new Plan();
-        plan.setName(raw_name);
-        plan.setStart(Date.valueOf(raw_start));
-        plan.setEnd(Date.valueOf(raw_end));
+        plan.setName(request.getParameter("name"));
+        plan.setStart(Date.valueOf(request.getParameter("from")));
+        plan.setEnd(Date.valueOf(request.getParameter("to")));
         Department d = new Department();
-        d.setId(Integer.parseInt(raw_did));
+        d.setId(Integer.parseInt(request.getParameter("did")));
         plan.setDept(d);
         
         String[] pids = request.getParameterValues("pid");
         for (String pid : pids) {
-            PlanCampain c = new PlanCampain();
+            PlanCampaiqn c = new PlanCampaiqn();
             
             Product p = new Product();
             p.setId(Integer.parseInt(pid));
@@ -70,7 +62,7 @@ public class ProductionPlanCreateController extends BaseRBACController{
             
             String raw_quantity = request.getParameter("quantity"+pid);
             String raw_cost = request.getParameter("cost"+pid);
-            
+             
             c.setQuantity(raw_quantity!=null&&raw_quantity.length()>0?Integer.parseInt(raw_quantity):0);
             c.setCost(raw_cost!=null&&raw_cost.length()>0?Float.parseFloat(raw_cost):0);
             

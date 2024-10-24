@@ -1,8 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
-
 package controller.employee;
 
 import controller.accesscontrol.BaseRBACController;
@@ -10,16 +5,10 @@ import dal.EmployeeDBContext;
 import entity.Employee;
 import entity.accesscontrol.User;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-/**
- *
- * @author sonnt-local hand-some
- */
 public class EmployeeDeleteController extends BaseRBACController {
 
     @Override
@@ -29,13 +18,21 @@ public class EmployeeDeleteController extends BaseRBACController {
 
     @Override
     protected void doAuthorizedPost(HttpServletRequest req, HttpServletResponse resp, User account) throws ServletException, IOException {
-        int id = Integer.parseInt(req.getParameter("id"));
-        Employee e = new Employee();
-        e.setId(id);
-        EmployeeDBContext db = new EmployeeDBContext();
-        db.delete(e);
-        resp.sendRedirect("list");
-    
-    }
+        // Lấy danh sách ID được chọn từ checkbox
+        String[] selectedIds = req.getParameterValues("id");
 
+        if (selectedIds != null) {
+            EmployeeDBContext db = new EmployeeDBContext();
+            for (String idStr : selectedIds) {
+                int id = Integer.parseInt(idStr);
+                Employee e = new Employee();
+                e.setId(id);
+                e.setStatus(false); // Đặt trạng thái thành false
+                db.updateStatus(e); // Cập nhật trạng thái trong cơ sở dữ liệu
+            }
+        }
+
+        resp.sendRedirect("list"); // Điều hướng về trang danh sách
+    }
 }
+

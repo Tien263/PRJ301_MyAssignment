@@ -44,14 +44,14 @@ public class LoginController extends HttpServlet {
                     case "Head of HRD":
                         request.getRequestDispatcher("hrd_dashboard.jsp").forward(request, response);
                         break;
-                    case "Human Resources Department": // Updated role name
-                        request.getRequestDispatcher("/employee/list").forward(request, response);
+                    case "Human Resources Department":
+                        response.sendRedirect("employee/list");
                         break;
                     case "Payroll Management":
                         request.getRequestDispatcher("payroll_dashboard.jsp").forward(request, response);
                         break;
                     case "Production Planning":
-                        request.getRequestDispatcher("menupp.jsp").forward(request, response);
+                        response.sendRedirect("productionplan/create");
                         break;
                     case "Worker Allocation":
                         request.getRequestDispatcher("worker_dashboard.jsp").forward(request, response);

@@ -5,8 +5,8 @@
 package dal;
 
 import dal.DBContext;
-import entity.assignment.Department;
-import entity.assignment.Product;
+import entity.productionplan.Department;
+import entity.productionplan.Product;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,7 +17,7 @@ import java.sql.*;
 
 /**
  *
- * @author sonnt-local
+ * @author xuant
  */
 public class ProductDBContext extends DBContext<Product> {
 

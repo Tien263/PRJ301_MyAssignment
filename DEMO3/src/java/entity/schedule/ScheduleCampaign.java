@@ -4,7 +4,7 @@
  */
 package entity.schedule;
 
-import entity.assignment.PlanCampain;
+import entity.productionplan.PlanCampaiqn;
 import java.sql.*;
 
 /**
@@ -13,7 +13,7 @@ import java.sql.*;
  */
 public class ScheduleCampaign {
     private int id;
-    private PlanCampain plcampain;
+    private PlanCampaiqn plcampain;
     private Date date;
     private String shift;
     private int quantity;
@@ -21,7 +21,7 @@ public class ScheduleCampaign {
     public ScheduleCampaign() {
     }
 
-    public ScheduleCampaign(int id, PlanCampain plcampain, Date date, String shift, int quantity) {
+    public ScheduleCampaign(int id, PlanCampaiqn plcampain, Date date, String shift, int quantity) {
         this.id = id;
         this.plcampain = plcampain;
         this.date = date;
@@ -37,11 +37,11 @@ public class ScheduleCampaign {
         this.id = id;
     }
 
-    public PlanCampain getPlcampain() {
+    public PlanCampaiqn getPlcampain() {
         return plcampain;
     }
 
-    public void setPlcampain(PlanCampain plcampain) {
+    public void setPlcampain(PlanCampaiqn plcampain) {
         this.plcampain = plcampain;
     }
 

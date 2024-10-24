@@ -7,7 +7,7 @@ package controller.employee;
 
 import dal.DepartmentDBContext;
 import dal.EmployeeDBContext;
-import entity.assignment.Department;
+import entity.productionplan.Department;
 import entity.Employee;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author sonnt-local hand-some
+ * @author xuant
  */
 public class EmployeeFilterController extends HttpServlet {
    

@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author sonnt-local
+ * @author xuant
  */
 public abstract class BaseRBACController extends BaseRequiredAuthenticationController {
     

@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author sonnt-local hand-some
+ * @author xuant
  */
 public class EmployeeListController extends BaseRBACController {
    

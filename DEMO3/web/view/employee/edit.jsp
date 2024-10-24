@@ -138,7 +138,7 @@
                 </select>
 
                 <!-- Created By (Read-Only) -->
-                <label>Created by: ${requestScope.e.name}</label>
+                <label>Created by: ${requestScope.e.createdby.username}</label>
 
                 <!-- Buttons -->
                 <div class="form-group">

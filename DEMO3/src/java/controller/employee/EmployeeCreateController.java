@@ -8,7 +8,7 @@ import controller.accesscontrol.BaseRBACController;
 import controller.accesscontrol.BaseRequiredAuthenticationController;
 import dal.DepartmentDBContext;
 import dal.EmployeeDBContext;
-import entity.assignment.Department;
+import entity.productionplan.Department;
 import entity.Employee;
 import entity.accesscontrol.User;
 import java.io.IOException;
@@ -20,7 +20,7 @@ import java.sql.Date;
 
 /**
  *
- * @author sonnt-local hand-some
+ * @author xuant
  */
 public class EmployeeCreateController extends BaseRBACController {
 
@@ -32,35 +32,37 @@ public class EmployeeCreateController extends BaseRBACController {
         request.getRequestDispatcher("../view/employee/add.jsp").forward(request, response);
     }
 
-    @Override
-    protected void doAuthorizedPost(HttpServletRequest request, HttpServletResponse response, User account) throws ServletException, IOException {
-        // Đọc các tham số
-        String raw_name = request.getParameter("name");
-        String raw_gender = request.getParameter("gender");
-        String raw_dob = request.getParameter("dob");
-        String raw_address = request.getParameter("address");
-        String raw_did = request.getParameter("did");
+   @Override
+protected void doAuthorizedPost(HttpServletRequest request, HttpServletResponse response, User account) throws ServletException, IOException {
+    // Đọc các tham số
+    String raw_name = request.getParameter("name");
+    String raw_gender = request.getParameter("gender");
+    String raw_dob = request.getParameter("dob");
+    String raw_address = request.getParameter("address");
+    String raw_did = request.getParameter("did");
 
-        // Tạo đối tượng Employee và ràng buộc dữ liệu
-        Employee e = new Employee();
-        e.setName(raw_name);
-        e.setAddress(raw_address);
-        e.setGender(raw_gender.equals("male"));
-        e.setDob(Date.valueOf(raw_dob));
+    // Tạo đối tượng Employee và ràng buộc dữ liệu
+    Employee e = new Employee();
+    e.setName(raw_name);
+    e.setAddress(raw_address);
+    e.setGender(raw_gender.equals("male"));
+    e.setDob(Date.valueOf(raw_dob));
 
-        Department d = new Department();
-        int did = Integer.parseInt(raw_did);
-        d.setId(did);
-        e.setDept(d);
+    Department d = new Department();
+    int did = Integer.parseInt(raw_did);
+    d.setId(did);
+    e.setDept(d);
 
-        e.setCreatedby(account);
+    e.setCreatedby(account);
+    e.setStatus(true); // Đặt status là true khi tạo mới
 
-        // Lưu dữ liệu vào cơ sở dữ liệu
-        EmployeeDBContext db = new EmployeeDBContext();
-        db.insert(e);
+    // Lưu dữ liệu vào cơ sở dữ liệu
+    EmployeeDBContext db = new EmployeeDBContext();
+    db.insert(e);
 
-        // Điều hướng người dùng về trang human_resources sau khi tạo mới thành công
-        response.sendRedirect("list");
-    }
+    // Điều hướng người dùng về trang human_resources sau khi tạo mới thành công
+    response.sendRedirect("list");
+}
+
 
 }

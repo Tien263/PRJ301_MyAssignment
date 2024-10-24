@@ -4,9 +4,9 @@
  */
 package dal;
 
-import dal.DBContext;
-import entity.assignment.Plan;
-import entity.assignment.PlanCampain;
+import java.sql.PreparedStatement;
+import entity.productionplan.Plan;
+import entity.productionplan.PlanCampaiqn;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -15,7 +15,7 @@ import java.sql.*;
 
 /**
  *
- * @author sonnt-local
+ * @author xuant
  */
 public class PlanDBContext extends DBContext<Plan> {
 
@@ -48,7 +48,7 @@ public class PlanDBContext extends DBContext<Plan> {
                 entity.setId(rs.getInt("plid"));
             }
 
-            for (PlanCampain campain : entity.getCampains()) {
+            for (PlanCampaiqn campain : entity.getCampains()) {
                 String sql_insert_campain = "INSERT INTO [PlanCampaiqn]\n"
                         + "           ([plid]\n"
                         + "           ,[pid]\n"

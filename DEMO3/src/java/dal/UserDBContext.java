@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author sonnt-local
+ * @author xuant
  */
 public class UserDBContext extends DBContext<User> {
 

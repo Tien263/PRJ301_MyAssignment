@@ -3,14 +3,17 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package entity;
+
 import entity.accesscontrol.User;
-import entity.assignment.Department;
+import entity.productionplan.Department;
 import java.sql.*;
+
 /**
  *
  * @author xuant
  */
 public class Employee {
+
     private int id;
     private String name;
     private int salary;
@@ -21,6 +24,15 @@ public class Employee {
     private User createdby;
     private User updatedby;
     private java.util.Date updatedtime;
+    private boolean status;
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
 
     public User getCreatedby() {
         return createdby;
@@ -46,8 +58,6 @@ public class Employee {
         this.updatedtime = updatedtime;
     }
 
-    
-
     public Department getDept() {
         return dept;
     }
@@ -55,8 +65,6 @@ public class Employee {
     public void setDept(Department dept) {
         this.dept = dept;
     }
-
-    
 
     public int getId() {
         return id;
@@ -105,7 +113,5 @@ public class Employee {
     public void setDob(Date dob) {
         this.dob = dob;
     }
-    
-    
-    
+
 }
