@@ -94,7 +94,6 @@
                         <td>${requestScope.timeNow}</td>
                         <td>${c.product.name}</td>
                         <td>${c.quantity}</td>
-                        
                     </tr>
                 </c:forEach>
             </tbody>

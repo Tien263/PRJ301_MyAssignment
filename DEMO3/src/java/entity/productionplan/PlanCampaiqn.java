@@ -11,6 +11,7 @@ import java.util.Date;
  * @author xuant
  */
 public class PlanCampaiqn {
+    
     private int id;
     private Plan plan;
     private Product product;

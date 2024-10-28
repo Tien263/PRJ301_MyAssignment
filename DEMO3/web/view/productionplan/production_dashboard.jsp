@@ -1,116 +1,196 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Production Dashboard</title>
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                background-color: #f4f4f9;
-                color: #333;
-            }
-            .container {
-                width: 70%;
-                margin: 40px auto;
-                padding: 20px;
-                background-color: #ffffff;
-                border-radius: 8px;
-                box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
-            }
-            h2 {
-                text-align: center;
-                color: #4CAF50;
-                margin-bottom: 30px;
-            }
-            .form-group {
-                display: flex;
-                justify-content: space-between;
-                margin-bottom: 15px;
-            }
-            .form-group label {
-                width: 20%;
-                font-weight: bold;
-            }
-            .form-group input[type="text"],
-            .form-group input[type="date"],
-            .form-group select {
-                width: 75%;
-                padding: 8px;
-                border: 1px solid #ccc;
-                border-radius: 4px;
-                box-sizing: border-box;
-            }
-            table {
-                width: 100%;
-                border-collapse: collapse;
-                margin-top: 20px;
-            }
-            table, th, td {
-                border: 1px solid #ddd;
-            }
-            th {
-                background-color: #4CAF50;
-                color: white;
-                padding: 10px;
-                text-align: center;
-            }
-            td {
-                padding: 10px;
-                text-align: center;
-            }
-            td input[type="text"] {
-                width: 90%;
-                padding: 5px;
-                border: none;
-                border-bottom: 1px solid #ccc;
-                border-radius: 4px;
-                text-align: center;
-            }
-            .save-button {
-                display: block;
-                width: 100px;
-                margin: 30px auto 0;
-                padding: 10px;
-                background-color: #4CAF50;
-                color: white;
-                text-align: center;
-                font-size: 16px;
-                font-weight: bold;
-                border: none;
-                border-radius: 4px;
-                cursor: pointer;
-                transition: background-color 0.3s;
-            }
-            .save-button:hover {
-                background-color: #45a049;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <h2>Production Dashboard</h2>
+<head>
+    <meta charset="UTF-8">
+    <title>Production Dashboard & Schedule Details</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #008cba;
+            padding: 20px;
+            color: white;
+            font-size: 18px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .header-bar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .header-bar a:hover {
+            background-color: #005f75;
+        }
+        .header-title {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            animation: fadeIn 0.5s ease;
+        }
+        h2, h1 {
+            text-align: center;
+            color: #008cba;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+        .form-container {
+            margin-bottom: 30px;
+        }
+        .form-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            width: 25%;
+            font-weight: 500;
+            color: #555;
+        }
+        .form-group input[type="text"],
+        .form-group input[type="date"],
+        .form-group select {
+            width: 70%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            transition: border 0.3s;
+        }
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #008cba;
+        }
+        .table-container {
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        th, td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #008cba;
+            color: white;
+            font-weight: 600;
+        }
+        td input[type="text"] {
+            width: 80%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            transition: border 0.3s;
+        }
+        td input:focus {
+            border-color: #008cba;
+        }
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .btn {
+            padding: 15px 40px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            color: white;
+        }
+        .btn-save {
+            background-color: #28a745;
+        }
+        .btn-save:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+        }
+        .btn-list {
+            background-color: #007bff;
+        }
+        .btn-list:hover {
+            background-color: #0069d9;
+            transform: translateY(-2px);
+        }
+        .btn-schedule {
+            background-color: #f39c12;
+        }
+        .btn-schedule:hover {
+            background-color: #e67e22;
+            transform: translateY(-2px);
+        }
+        @keyframes fadeIn {
+            from {opacity: 0;}
+            to {opacity: 1;}
+        }
+    </style>
+</head>
+<body>
+    <!-- Thanh điều hướng -->
+    <div class="header-bar">
+        <a href="../login">Login</a>
+        <span class="header-title">Production Dashboard & Schedule Details</span>
+        <a href="../schedule/create">Schedule Campaign</a>
+    </div>
 
-            <form action="create" method="POST">
-                <div class="form-group">
-                    <label for="name">Plan Title:</label>
-                    <input type="text" id="name" name="name" placeholder="Enter Plan Title">
+    <!-- Container chính -->
+    <div class="container">
+        <!-- Form tạo kế hoạch sản xuất -->
+        <h2>Create New Production Plan</h2>
+        <form action="create" method="POST" class="form-container">
+            <div class="form-group">
+                <label for="name">Plan Title:</label>
+                <input type="text" id="name" name="name" placeholder="Enter Plan Title" required>
+            </div>
+            <div class="form-group">
+                <label for="date-range">From - To:</label>
+                <div style="width: 70%;">
+                    <input type="date" id="from" name="from" style="width: 48%;" required>
+                    <input type="date" id="to" name="to" style="width: 48%;" required>
                 </div>
-                <div class="form-group">
-                    <label for="date-range">From - To:</label>
-                    <input type="date" id="from" name="from" required>
-                    <input type="date" id="to" name="to" required>
-                </div>
-                <div class="form-group">
-                    <label for="workshop">Workshop:</label>
-                    <select name="did" id="workshop">
-                        <c:forEach items="${requestScope.depts}" var="d">
-                            <option value="${d.id}">${d.name}</option>
-                        </c:forEach>
-                    </select>
-                </div>
+            </div>
+            <div class="form-group">
+                <label for="workshop">Workshop:</label>
+                <select name="did" id="workshop" required>
+                    <c:forEach items="${requestScope.depts}" var="d">
+                        <option value="${d.id}">${d.name}</option>
+                    </c:forEach>
+                </select>
+            </div>
 
+            <h3 style="text-align:center; margin-top: 30px; font-size: 20px; color: #333;">Product Details</h3>
+
+            <!-- Bảng sản phẩm -->
+            <div class="table-container">
                 <table>
                     <tr>
                         <th>Product</th>
@@ -120,14 +200,31 @@
                     <c:forEach items="${requestScope.products}" var="p">
                         <tr>
                             <td>${p.name}<input type="hidden" value="${p.id}" name="pid"/></td>
-                            <td><input type="text" name="quantity${p.id}" placeholder="Enter Quantity"></td>
-                            <td><input type="text" name="cost${p.id}" placeholder="Enter Cost"></td>
+                            <td><input type="text" name="quantity${p.id}" placeholder="Enter Quantity" required></td>
+                            <td><input type="text" name="cost${p.id}" placeholder="Enter Cost" required></td>
                         </tr>   
                     </c:forEach>
                 </table>
+            </div>
 
-                <button type="submit" class="save-button">Save</button>
-            </form>
-        </div>
-    </body>
+            <!-- Nút hành động -->
+            <div class="action-buttons">
+                <button type="submit" class="btn btn-save">Save Plan</button>
+                <a href="list" class="btn btn-list">View All Plans</a>
+            </div>
+        </form>
+
+        <!-- Phần hiển thị chi tiết lịch trình -->
+        <h1>Chi Tiết Lịch Trình</h1>
+        <form action="../schedule/create" method="GET" class="form-group">
+            <label for="planSelect">Chọn Kế Hoạch:</label>
+            <select id="planSelect" name="plid" required>
+                <c:forEach items="${requestScope.ps}" var="c">
+                    <option value="${c.id}">${c.name}</option>
+                </c:forEach>
+            </select>
+            <input type="submit" value="Tạo Lịch Trình" class="btn btn-schedule" style="margin-top: 20px;">
+        </form>
+    </div>
+</body>
 </html>

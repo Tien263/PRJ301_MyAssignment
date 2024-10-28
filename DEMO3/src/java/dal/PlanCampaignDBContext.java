@@ -85,7 +85,44 @@ public class PlanCampaignDBContext extends DBContext<PlanCampaiqn> {
 
     @Override
     public PlanCampaiqn get(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+
+        PlanCampaiqn pc = null;
+        PreparedStatement command = null;
+        try {
+            String sql = "SELECT p.plid, pc.pcid, p.plname, p.[start], p.[end]\n"
+                    + "FROM [Plan] p \n"
+                    + "INNER JOIN PlanCampaiqn pc ON pc.plid = p.plid \n"
+                    + "WHERE p.plid = ? \n";
+            command = connection.prepareCall(sql);
+            command.setInt(1, id);
+            ResultSet rs = command.executeQuery();
+            while (rs.next()) {
+
+                pc = new PlanCampaiqn();
+                pc.setId(rs.getInt("pcid"));
+
+                Plan p = new Plan();
+                p.setId(rs.getInt("plid"));
+                p.setName(rs.getNString("plname"));
+                p.setStart(rs.getDate("start"));
+                p.setEnd(rs.getDate("end"));
+
+                pc.setPlan(p);
+
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(PlanCampaignDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                command.close();
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(EmployeeDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return pc;
     }
 
+    
 }

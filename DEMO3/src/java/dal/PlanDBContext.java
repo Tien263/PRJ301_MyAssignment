@@ -4,6 +4,7 @@
  */
 package dal;
 
+import entity.productionplan.Department;
 import java.sql.PreparedStatement;
 import entity.productionplan.Plan;
 import entity.productionplan.PlanCampaiqn;
@@ -30,12 +31,12 @@ public class PlanDBContext extends DBContext<Plan> {
                     + "           ,[end]\n"
                     + "           ,[did])\n"
                     + "     VALUES\n"
-                    + "           (?\n" 
+                    + "           (?\n"
                     + "           ,?\n"
                     + "           ,?\n"
                     + "           ,?)";
             PreparedStatement stm_insert_plan = connection.prepareStatement(sql_insert_plan);
-            stm_insert_plan.setString(1, entity.getName());
+            stm_insert_plan.setNString(1, entity.getName());
             stm_insert_plan.setDate(2, entity.getStart());
             stm_insert_plan.setDate(3, entity.getEnd());
             stm_insert_plan.setInt(4, entity.getDept().getId());
@@ -55,7 +56,7 @@ public class PlanDBContext extends DBContext<Plan> {
                         + "           ,[quantity]\n"
                         + "           ,[cost])\n"
                         + "     VALUES\n"
-                        + "           ?\n"
+                        + "           (?\n"
                         + "           ,?\n"
                         + "           ,?\n"
                         + "           ,?)";
@@ -103,12 +104,67 @@ public class PlanDBContext extends DBContext<Plan> {
 
     @Override
     public ArrayList<Plan> list() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+
+        ArrayList<Plan> plans = new ArrayList<>();
+        PreparedStatement command = null;
+        try {
+            String sql = "select * from [Plan]";
+            command = connection.prepareStatement(sql);
+            ResultSet rs = command.executeQuery();
+
+            while (rs.next()) {
+                Plan p = new Plan();
+                p.setId(rs.getInt("plid"));
+                p.setName(rs.getNString("plname"));
+                p.setStart(rs.getDate("start"));
+                p.setEnd(rs.getDate("end"));
+
+                Department d = new Department();
+                d.setId(rs.getInt("did"));
+                p.setDept(d);
+
+                plans.add(p);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(PlanDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return plans;
     }
 
     @Override
     public Plan get(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Plan p = null;
+        PreparedStatement command = null;
+        try {
+            String sql = "select* from [Plan] where plid = ?";
+            command = connection.prepareCall(sql);
+            command.setInt(1, id);
+            ResultSet rs = command.executeQuery();
+            if (rs.next()) {
+                p = new Plan();
+                p.setId(rs.getInt("plid"));
+                p.setName(rs.getNString("plname"));
+                p.setStart(rs.getDate("start"));
+                p.setEnd(rs.getDate("end"));
+
+                Department d = new Department();
+                d.setName(rs.getNString("did"));
+                p.setDept(d);
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(EmployeeDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                command.close();
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(EmployeeDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return p;
+
     }
 
 }

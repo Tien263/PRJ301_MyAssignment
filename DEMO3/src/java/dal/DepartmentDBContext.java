@@ -78,21 +78,21 @@ public class DepartmentDBContext extends DBContext<Department> {
             Department d = new Department();
             d.setId(rs.getInt("did"));
             d.setName(rs.getString("dname"));
-            Type t = new Type();
-            t.setName(rs.getString("tname"));
-            d.setTypes(t);
+//            Type t = new Type();
+//            t.setName(rs.getString("tname"));
+//            d.setTypes(t);
             depts.add(d);
         }
     } catch (SQLException ex) {
         Logger.getLogger(dal.DepartmentDBContext.class.getName()).log(Level.SEVERE, null, ex);
     } finally {
-        try {
-            if (command != null) command.close();
-            if (connection != null) connection.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(dal.DepartmentDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            try {
+                command.close();
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(dal.DepartmentDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-    }
     return depts;
 }
 
