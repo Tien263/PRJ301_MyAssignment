@@ -32,13 +32,13 @@ public class ProductionPlanCreateController extends BaseRBACController {
     protected void doAuthorizedGet(HttpServletRequest request, HttpServletResponse response, User account) throws ServletException, IOException {
         ProductDBContext dbProduct = new ProductDBContext();
         DepartmentDBContext dbDepts = new DepartmentDBContext();
-//        PlanCampaignDBContext dbCampaign = new PlanCampaignDBContext();
+        PlanCampaignDBContext dbCampaign = new PlanCampaignDBContext();
 
         PlanDBContext pdb = new PlanDBContext();
         ArrayList<Plan> ps = pdb.list();
-//        ArrayList<PlanCampaiqn> pcs = dbCampaign.list();
-//        
-//        request.setAttribute("pcs", pcs);
+        ArrayList<PlanCampaiqn> pcs = dbCampaign.list();
+        
+        request.setAttribute("pcs", pcs);
         request.setAttribute("ps", ps);
         request.setAttribute("products", dbProduct.list());
         request.setAttribute("depts", dbDepts.get("Workshop"));
@@ -81,9 +81,9 @@ public class ProductionPlanCreateController extends BaseRBACController {
             //insert
             PlanDBContext db = new PlanDBContext();
             db.insert(plan);
-            response.getWriter().println("your plan has been added!");
+            response.sendRedirect("create");
         } else {
-            response.getWriter().println("your plan does not have any products / campains");
+            response.sendRedirect("create");
         }
 
     }

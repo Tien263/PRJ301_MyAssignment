@@ -32,10 +32,6 @@
         <servlet-name>ScheduleCreateController</servlet-name>
         <servlet-class>controller.schedule.ScheduleCreateController</servlet-class>
     </servlet>
-    <servlet>
-        <servlet-name>ScheduleInsertController</servlet-name>
-        <servlet-class>controller.schedule.ScheduleInsertController</servlet-class>
-    </servlet>
     <servlet-mapping>
         <servlet-name>EmployeeCreateController</servlet-name>
         <url-pattern>/employee/create</url-pattern>
@@ -67,9 +63,5 @@
     <servlet-mapping>
         <servlet-name>ScheduleCreateController</servlet-name>
         <url-pattern>/schedule/create</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ScheduleInsertController</servlet-name>
-        <url-pattern>/schedule/insert</url-pattern>
     </servlet-mapping>
 </web-app>

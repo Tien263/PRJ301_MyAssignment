@@ -149,7 +149,7 @@ public class PlanDBContext extends DBContext<Plan> {
                 p.setEnd(rs.getDate("end"));
 
                 Department d = new Department();
-                d.setName(rs.getNString("did"));
+                d.setId(rs.getInt("did"));
                 p.setDept(d);
 
             }

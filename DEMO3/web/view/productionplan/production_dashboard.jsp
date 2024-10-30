@@ -213,18 +213,6 @@
                 <a href="list" class="btn btn-list">View All Plans</a>
             </div>
         </form>
-
-        <!-- Phần hiển thị chi tiết lịch trình -->
-        <h1>Chi Tiết Lịch Trình</h1>
-        <form action="../schedule/create" method="GET" class="form-group">
-            <label for="planSelect">Chọn Kế Hoạch:</label>
-            <select id="planSelect" name="plid" required>
-                <c:forEach items="${requestScope.ps}" var="c">
-                    <option value="${c.id}">${c.name}</option>
-                </c:forEach>
-            </select>
-            <input type="submit" value="Tạo Lịch Trình" class="btn btn-schedule" style="margin-top: 20px;">
-        </form>
     </div>
 </body>
 </html>

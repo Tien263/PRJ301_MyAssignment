@@ -22,53 +22,26 @@ public class ScheduleCampaiqnDBContext extends DBContext<ScheduleCampaign> {
 
     @Override
     public void insert(ScheduleCampaign entity) {
+        String sql_insert_scheduleCampaign = "INSERT INTO [ScheduleCampaiqn]\n"
+                + "           ([pcid]\n"
+                + "           ,[date]\n"
+                + "           ,[shift]\n"
+                + "           ,[quantity])\n"
+                + "     VALUES\n"
+                + "           (?\n"
+                + "           ,?\n"
+                + "           ,?\n"
+                + "           ,?)";
         try {
-            connection.setAutoCommit(false);
-
-            String sql_insert_scheduleCampaign = "INSERT INTO [ScheduleCampaiqn]\n"
-                    + "           ([pcid]\n"
-                    + "           ,[date]\n"
-                    + "           ,[shift]\n"
-                    + "           ,[quantity])\n"
-                    + "     VALUES\n"
-                    + "           (?\n"
-                    + "           ,?\n"
-                    + "           ,?\n"
-                    + "           ,?)";
-
             PreparedStatement stm_insert_scheduleCampaign = connection.prepareCall(sql_insert_scheduleCampaign);
             stm_insert_scheduleCampaign.setInt(1, entity.getPlcampain().getId());
             stm_insert_scheduleCampaign.setDate(2, entity.getDate());
             stm_insert_scheduleCampaign.setString(3, entity.getShift());
             stm_insert_scheduleCampaign.setInt(4, entity.getQuantity());
             stm_insert_scheduleCampaign.executeUpdate();
-            
-            String sql_select_scheduleCampaign = "SELECT @@IDENTITY as scid";
-            PreparedStatement stm_select_scheduleCampaign = connection.prepareStatement(sql_select_scheduleCampaign);
-            ResultSet rs = stm_select_scheduleCampaign.executeQuery();
-            if (rs.next()) {
-                entity.setId(rs.getInt("scid"));
-            }
-            
-            connection.commit();
+
         } catch (SQLException ex) {
-            Logger.getLogger(PlanDBContext.class.getName()).log(Level.SEVERE, null, ex);
-            try {
-                connection.rollback();
-            } catch (SQLException ex1) {
-                Logger.getLogger(PlanDBContext.class.getName()).log(Level.SEVERE, null, ex1);
-            }
-        } finally {
-            try {
-                connection.setAutoCommit(true);
-            } catch (SQLException ex) {
-                Logger.getLogger(PlanDBContext.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            try {
-                connection.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(PlanDBContext.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            ex.printStackTrace();
         }
 
     }
