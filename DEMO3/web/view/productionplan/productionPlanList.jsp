@@ -27,6 +27,29 @@
                 color: #333;
                 margin-bottom: 30px;
             }
+            .search-bar {
+                margin-bottom: 20px;
+                text-align: center;
+            }
+            .search-bar input[type="text"] {
+                padding: 10px;
+                width: 300px;
+                font-size: 16px;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+            }
+            .search-bar input[type="submit"] {
+                padding: 10px 20px;
+                font-size: 16px;
+                color: white;
+                background-color: #4CAF50;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+            .search-bar input[type="submit"]:hover {
+                background-color: #45a049;
+            }
             table {
                 width: 100%;
                 border-collapse: collapse;
@@ -50,42 +73,41 @@
                 background-color: #eaeaea;
                 cursor: pointer;
             }
+            .btn-container {
+                display: flex;
+                gap: 5px; /* Khoảng cách giữa các nút */
+                justify-content: center;
+            }
             .btn {
-                display: inline-block;
                 padding: 8px 16px;
-                margin-top: 10px;
                 color: white;
-                background-color: #4CAF50; /* Màu xanh lá cho nút "Thêm Kế Hoạch Chi tiết" */
+                background-color: #4CAF50;
                 border: none;
                 border-radius: 5px;
                 text-decoration: none;
                 font-size: 14px;
+                cursor: pointer;
             }
             .btn:hover {
                 background-color: #45a049;
             }
             .btn-delete {
-                display: inline-block;
                 padding: 8px 16px;
-                margin-top: 10px;
                 color: white;
-                background-color: #f44336; /* Màu đỏ cho nút "Xóa" */
+                background-color: #f44336;
                 border: none;
                 border-radius: 5px;
-                text-decoration: none;
                 font-size: 14px;
-                margin-left: 5px; /* Thêm khoảng cách giữa nút "Thêm" và nút "Xóa" */
+                cursor: pointer;
             }
             .btn-delete:hover {
                 background-color: #d32f2f;
             }
         </style>
         <script>
-            function removeEmployee(id)
-            {
+            function removeEmployee(id) {
                 var result = confirm("Are you sure?");
-                if (result)
-                {
+                if (result) {
                     document.getElementById("frmRemoveEmployee" + id).submit();
                 }
             }
@@ -94,6 +116,20 @@
     <body>
         <div class="container">
             <h1>Danh sách Plan Campaign</h1>
+
+            <!-- Nút quay lại -->
+            <div style="text-align: center; margin-bottom: 20px;">
+                <button onclick="window.history.back();" class="btn">Quay lại</button>
+            </div>
+
+            <!-- Thanh tìm kiếm -->
+            <div class="search-bar">
+                <form action="search" method="POST">
+                    <input type="text" name="search" placeholder="Tìm kiếm tên kế hoạch..." value="${param.search}">
+                    <input type="submit" value="Tìm kiếm">
+                </form>
+            </div>
+
             <table>
                 <thead>
                     <tr>
@@ -104,7 +140,7 @@
                         <th>Product Name</th>
                         <th>Quantity</th>
                         <th>Now Date</th>
-                        <th></th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -118,8 +154,10 @@
                             <td>${c.quantity}</td>
                             <td>${requestScope.timeNow}</td>
                             <td>
-                                <a href="../schedule/create?plid=${c.plan.id}&pcid=${c.id}" class="btn">Schedule Campaign</a>
-                                <input type="button" value="Xóa" class="btn-delete" onclick="removeEmployee(${c.id})"/>
+                                <div class="btn-container">
+                                    <a href="../schedule/create?plid=${c.plan.id}&pcid=${c.id}" class="btn">Schedule Campaign</a>
+                                    <input type="button" value="Xóa" class="btn-delete" onclick="removeEmployee(${c.id})"/>
+                                </div>
                                 <form id="frmRemoveEmployee${c.id}" action="delete" method="POST" style="display: none;">
                                     <input type="hidden" name="id" value="${c.id}"/>
                                 </form>

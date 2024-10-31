@@ -67,7 +67,7 @@ public class ScheduleCreateController extends HttpServlet {
                     schedule.setPlcampain(planCampain);
                     schedule.setDate(Date.valueOf(date));
                     schedule.setShift("K" + shift);
-                    schedule.setQuantity(quantity);
+                    schedule.setQuantity(quantityK != null && quantityK.length() > 0 ? quantity : 0);
 
                     // Thực hiện chèn vào database
                     scdb.insert(schedule);

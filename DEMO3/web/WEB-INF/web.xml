@@ -32,6 +32,14 @@
         <servlet-name>ScheduleCreateController</servlet-name>
         <servlet-class>controller.schedule.ScheduleCreateController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ScheduleEmployeeCreateController</servlet-name>
+        <servlet-class>controller.scheduleemployee.ScheduleEmployeeCreateController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ScheduleCampaignWS1List</servlet-name>
+        <servlet-class>controller.scheduleemployee.ScheduleCampaignWS1List</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>EmployeeCreateController</servlet-name>
         <url-pattern>/employee/create</url-pattern>
@@ -63,5 +71,13 @@
     <servlet-mapping>
         <servlet-name>ScheduleCreateController</servlet-name>
         <url-pattern>/schedule/create</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ScheduleEmployeeCreateController</servlet-name>
+        <url-pattern>/scheduleemployee/create</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ScheduleCampaignWS1List</servlet-name>
+        <url-pattern>/scheduleemployee/listws1</url-pattern>
     </servlet-mapping>
 </web-app>

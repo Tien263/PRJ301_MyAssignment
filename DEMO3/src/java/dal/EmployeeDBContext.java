@@ -154,7 +154,7 @@ public class EmployeeDBContext extends DBContext<Employee> {
         }
 
     }
-    
+
     public void updateStatus(Employee employee) {
         String sql = "UPDATE Employee SET status = ? WHERE eid = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -321,6 +321,29 @@ public class EmployeeDBContext extends DBContext<Employee> {
         }
         return null;
 
+    }
+
+    public ArrayList<Employee> getDepartmentbyID(int id) {
+        ArrayList<Employee> emps = new ArrayList<>();
+        PreparedStatement command = null;
+        try {
+            String sql = "select eid , ename from Employee \n"
+                    + "Where did = ? and status = 1";
+
+            command = connection.prepareStatement(sql);
+            command.setInt(1, id);
+            ResultSet rs = command.executeQuery();
+            while (rs.next()) {
+                Employee emp = new Employee();
+                emp.setId(rs.getInt("eid"));
+                emp.setName(rs.getNString("ename"));
+                
+                emps.add(emp);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(EmployeeDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return emps;
     }
 
 }

@@ -138,7 +138,7 @@ public class PlanDBContext extends DBContext<Plan> {
         PreparedStatement command = null;
         try {
             String sql = "select* from [Plan] where plid = ?";
-            command = connection.prepareCall(sql);
+            command = connection.prepareStatement(sql);
             command.setInt(1, id);
             ResultSet rs = command.executeQuery();
             if (rs.next()) {

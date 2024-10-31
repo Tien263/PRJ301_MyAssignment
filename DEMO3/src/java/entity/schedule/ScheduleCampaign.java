@@ -18,16 +18,6 @@ public class ScheduleCampaign {
     private String shift;
     private int quantity;
 
-    public ScheduleCampaign() {
-    }
-
-    public ScheduleCampaign(int id, PlanCampaiqn plcampain, Date date, String shift, int quantity) {
-        this.id = id;
-        this.plcampain = plcampain;
-        this.date = date;
-        this.shift = shift;
-        this.quantity = quantity;
-    }
 
     public int getId() {
         return id;

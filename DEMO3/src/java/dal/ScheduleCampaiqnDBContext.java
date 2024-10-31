@@ -5,6 +5,7 @@
 package dal;
 
 import controller.accesscontrol.BaseRBACController;
+import entity.productionplan.Department;
 import entity.productionplan.Plan;
 import entity.productionplan.PlanCampaiqn;
 import entity.productionplan.Product;
@@ -105,4 +106,77 @@ public class ScheduleCampaiqnDBContext extends DBContext<ScheduleCampaign> {
     public ArrayList<ScheduleCampaign> list() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+
+    public ArrayList<ScheduleCampaign> get(String department) {
+        ArrayList<ScheduleCampaign> scs = new ArrayList<>();
+        PreparedStatement command = null;
+        try {
+            String sql = "select d.dname , sc.scid, sc.date,pd.pname, sc.shift , sc.quantity from PlanCampaiqn pc \n"
+                    + "inner join Product pd on pc.pid = pd.pid\n"
+                    + "inner join ScheduleCampaiqn sc on sc.pcid = pc.pcid\n"
+                    + "inner join [Plan] p on p.plid = pc.plid \n"
+                    + "inner join Department d on d.did = p.did\n"
+                    + "Where d.dname = ?";
+
+            command = connection.prepareStatement(sql);
+            command.setString(1, department);
+            ResultSet rs = command.executeQuery();
+            while (rs.next()) {
+                ScheduleCampaign sc = new ScheduleCampaign();
+                sc.setId(rs.getInt("scid"));
+                sc.setDate(rs.getDate("date"));
+                sc.setShift(rs.getString("shift"));
+                sc.setQuantity(rs.getInt("quantity"));
+
+                PlanCampaiqn pc = new PlanCampaiqn();
+                Product p = new Product();
+                p.setName(rs.getString("pname"));
+                pc.setProduct(p);
+                sc.setPlcampain(pc);
+
+                scs.add(sc);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ScheduleCampaiqnDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                command.close();
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(dal.DepartmentDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return scs;
+    }
+
+    public ScheduleCampaign getScheduleCampaignById(int scid) {
+        ScheduleCampaign scs = null;
+        PreparedStatement command = null;
+        try {
+            String sql = "select [date], [shift], quantity from ScheduleCampaiqn\n"
+                    + "where scid = ?";
+
+            command = connection.prepareStatement(sql);
+            command.setInt(1, scid);
+            ResultSet rs = command.executeQuery();
+            if (rs.next()) {
+                scs = new ScheduleCampaign();
+                scs.setDate(rs.getDate("date"));
+                scs.setShift(rs.getString("shift"));
+                scs.setQuantity(rs.getInt("quantity"));
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ScheduleCampaiqnDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                command.close();
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(dal.DepartmentDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return scs;
+    }
+
 }

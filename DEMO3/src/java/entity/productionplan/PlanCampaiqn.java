@@ -4,6 +4,8 @@
  */
 package entity.productionplan;
 
+import entity.schedule.ScheduleCampaign;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -18,6 +20,17 @@ public class PlanCampaiqn {
     private int quantity;
     private float cost;
     private java.util.Date timeNow;
+    private ArrayList<ScheduleCampaign> schedule = new ArrayList<>();
+
+    public ArrayList<ScheduleCampaign> getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(ArrayList<ScheduleCampaign> schedule) {
+        this.schedule = schedule;
+    }
+    
+    
 
     public Date getTimeNow() {
         return timeNow;

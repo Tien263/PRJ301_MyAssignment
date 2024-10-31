@@ -35,9 +35,7 @@ public class PlanCampaignDBContext extends DBContext<PlanCampaiqn> {
                 + "      WHERE pcid = ?";
 
         PreparedStatement stm_delete = null;
-
         try {
-
             stm_delete = connection.prepareStatement(sql_delete);
             stm_delete.setInt(1, entity.getId());
             stm_delete.executeUpdate();
@@ -124,6 +122,52 @@ public class PlanCampaignDBContext extends DBContext<PlanCampaiqn> {
                 pcs.setProduct(p);
             }
 
+        } catch (SQLException ex) {
+            Logger.getLogger(PlanCampaignDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                command.close();
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(EmployeeDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return pcs;
+    }
+    
+    public ArrayList<PlanCampaiqn> search(String planName) {
+        ArrayList<PlanCampaiqn> pcs = new ArrayList<>();
+        PreparedStatement command = null;
+        try {
+            String sql = "SELECT p.plid, pc.pcid, p.plname, d.dname, p.start, pd.pname, pc.quantity FROM [Plan] p " +
+                         "INNER JOIN [PlanCampaiqn] pc ON p.plid = pc.plid " +
+                         "INNER JOIN [Product] pd ON pc.pid = pd.pid " +
+                         "INNER JOIN [Department] d ON p.did = d.did " +
+                         "WHERE p.plname LIKE ?";
+            command = connection.prepareStatement(sql);
+            command.setString(1, "%" + planName + "%");
+            ResultSet rs = command.executeQuery();
+            while (rs.next()) {
+                PlanCampaiqn pc = new PlanCampaiqn();
+                pc.setId(rs.getInt("pcid"));
+                pc.setQuantity(rs.getInt("quantity"));
+
+                Plan p = new Plan();
+                p.setId(rs.getInt("plid"));
+                p.setName(rs.getNString("plname"));
+                p.setStart(rs.getDate("start"));
+
+                Department d = new Department();
+                d.setName(rs.getString("dname"));
+                p.setDept(d);
+
+                Product pd = new Product();
+                pd.setName(rs.getNString("pname"));
+                pc.setProduct(pd);
+
+                pc.setPlan(p);
+                pcs.add(pc);
+            }
         } catch (SQLException ex) {
             Logger.getLogger(PlanCampaignDBContext.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
