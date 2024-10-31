@@ -53,26 +53,23 @@ public class LoginController extends HttpServlet {
                     case "Production Planning":
                         response.sendRedirect("productionplan/create");
                         break;
-                    case "Worker Allocation":
-                        request.getRequestDispatcher("worker_dashboard.jsp").forward(request, response);
-                        break;
                     case "Manager 1":
                         response.sendRedirect("scheduleemployee/listws1");
                         break;
                     case "Manager 2":
-                        request.getRequestDispatcher("manager2_dashboard.jsp").forward(request, response);
+                        response.sendRedirect("scheduleemployee/listws2");
                         break;
                     case "Manager 3":
-                        request.getRequestDispatcher("manager3_dashboard.jsp").forward(request, response);
+                        response.sendRedirect("scheduleemployee/listws3");
                         break;
                     case "Manager 4":
-                        request.getRequestDispatcher("manager4_dashboard.jsp").forward(request, response);
+                        response.sendRedirect("scheduleemployee/listws4");
                         break;
                     case "Manager 5":
-                        request.getRequestDispatcher("manager5_dashboard.jsp").forward(request, response);
+                        response.sendRedirect("scheduleemployee/listws5");
                         break;
                     case "Manager 6":
-                        request.getRequestDispatcher("manager6_dashboard.jsp").forward(request, response);
+                        response.sendRedirect("scheduleemployee/listws6");
                         break;
                     default:
                         request.setAttribute("error", "Role not recognized. Please contact the administrator.");

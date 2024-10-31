@@ -6,8 +6,10 @@ package controller.scheduleemployee;
 
 import dal.EmployeeDBContext;
 import dal.ScheduleCampaiqnDBContext;
+import dal.ScheduleEmployeeDBContext;
 import entity.Employee;
 import entity.schedule.ScheduleCampaign;
+import entity.schedule.Schedule_Detail;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -15,6 +17,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -85,7 +88,31 @@ public class ScheduleEmployeeCreateController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        ScheduleEmployeeDBContext sedb = new ScheduleEmployeeDBContext();
+        ScheduleCampaiqnDBContext scdb = new ScheduleCampaiqnDBContext();
+        int scid = Integer.parseInt(request.getParameter("scid"));
+        ScheduleCampaign schedule = scdb.getScheduleCampaignById(scid);
+        String[] eids = request.getParameterValues("eid");
+
+        List<Integer> listEids = new ArrayList<>();
+        List<Integer> listQuantities = new ArrayList<>();
+
+        for (String eid_raw : eids) {
+            int eid = Integer.parseInt(eid_raw);
+            String paramName = "quantities" + eid;
+            String quantityP = request.getParameter(paramName);
+
+            if (quantityP != null && !quantityP.isEmpty()) {
+                int quantity = Integer.parseInt(quantityP);
+
+                listEids.add(eid);
+                listQuantities.add(quantity);
+
+            }
+        }
+        // Sử dụng hàm insertMultipleAssignments để lưu tất cả nhân viên cùng một lúc
+        sedb.insertMultipleAssignments(scid, listEids, listQuantities);
+
     }
 
     /**

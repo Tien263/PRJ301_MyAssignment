@@ -81,7 +81,8 @@
         </div>
 
         <!-- Employee Assignment Form -->
-        <form action="assignEmployees" method="POST">
+        <form action="create" method="POST">
+            <input type="hidden" name="scid" value="${schedule.id}"/>
             <h3>Assign Employees to Schedule</h3>
             <table>
                 <thead>
@@ -94,11 +95,15 @@
                 <tbody>
                     <c:forEach var="employee" items="${requestScope.emps}">
                         <tr>
-                            <td>${employee.id}</td>
+                            <td>
+                                <!-- Hidden input to store employee IDs -->
+                                <input type="hidden" name="eid" value="${employee.id}" />
+                                ${employee.id}
+                            </td>
                             <td>${employee.name}</td>
                             <td>
                                 <!-- Input for assigning quantity, default is 0 -->
-                                <input type="number" name="assignedQuantities[${employee.id}]" min="0" value="0" style="width: 60px;" />
+                                <input type="number" name="quantities${employee.id}" min="0" value="0" style="width: 60px;" />
                             </td>
                         </tr>
                     </c:forEach>

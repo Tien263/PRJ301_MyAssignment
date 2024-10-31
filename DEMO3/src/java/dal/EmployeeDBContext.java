@@ -337,7 +337,7 @@ public class EmployeeDBContext extends DBContext<Employee> {
                 Employee emp = new Employee();
                 emp.setId(rs.getInt("eid"));
                 emp.setName(rs.getNString("ename"));
-                
+
                 emps.add(emp);
             }
         } catch (SQLException ex) {
@@ -346,4 +346,23 @@ public class EmployeeDBContext extends DBContext<Employee> {
         return emps;
     }
 
+    public Employee getEmployeebyID(int id) {
+
+        Employee emps = new Employee();
+        PreparedStatement command = null;
+        try {
+            String sql = "select eid , ename from Employee Where eid = ? and status = 1;";
+            command = connection.prepareStatement(sql);
+            command.setInt(1, id);
+            ResultSet rs = command.executeQuery();
+            while (rs.next()) {
+                Employee emp = new Employee();
+                emp.setId(rs.getInt("eid"));
+                emp.setName(rs.getNString("ename"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(EmployeeDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return emps;
+    }
 }

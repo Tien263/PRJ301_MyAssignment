@@ -116,7 +116,8 @@ public class ScheduleCampaiqnDBContext extends DBContext<ScheduleCampaign> {
                     + "inner join ScheduleCampaiqn sc on sc.pcid = pc.pcid\n"
                     + "inner join [Plan] p on p.plid = pc.plid \n"
                     + "inner join Department d on d.did = p.did\n"
-                    + "Where d.dname = ?";
+                    + "Where d.dname = ?"
+                    + "ORDER BY sc.date ASC";
 
             command = connection.prepareStatement(sql);
             command.setString(1, department);
@@ -153,7 +154,7 @@ public class ScheduleCampaiqnDBContext extends DBContext<ScheduleCampaign> {
         ScheduleCampaign scs = null;
         PreparedStatement command = null;
         try {
-            String sql = "select [date], [shift], quantity from ScheduleCampaiqn\n"
+            String sql = "select scid, [date], [shift], quantity from ScheduleCampaiqn\n"
                     + "where scid = ?";
 
             command = connection.prepareStatement(sql);
@@ -161,6 +162,7 @@ public class ScheduleCampaiqnDBContext extends DBContext<ScheduleCampaign> {
             ResultSet rs = command.executeQuery();
             if (rs.next()) {
                 scs = new ScheduleCampaign();
+                scs.setId(rs.getInt("scid"));
                 scs.setDate(rs.getDate("date"));
                 scs.setShift(rs.getString("shift"));
                 scs.setQuantity(rs.getInt("quantity"));

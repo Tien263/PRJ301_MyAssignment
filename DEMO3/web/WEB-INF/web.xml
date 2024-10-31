@@ -40,6 +40,22 @@
         <servlet-name>ScheduleCampaignWS1List</servlet-name>
         <servlet-class>controller.scheduleemployee.ScheduleCampaignWS1List</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ScheduleCampaignWS2List</servlet-name>
+        <servlet-class>controller.scheduleemployee.ScheduleCampaignWS2List</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ScheduleCampaignWS4List</servlet-name>
+        <servlet-class>controller.scheduleemployee.ScheduleCampaignWS4List</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ScheduleCampaignWS3List</servlet-name>
+        <servlet-class>controller.scheduleemployee.ScheduleCampaignWS3List</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ScheduleCampaignWS6List</servlet-name>
+        <servlet-class>controller.scheduleemployee.ScheduleCampaignWS6List</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>EmployeeCreateController</servlet-name>
         <url-pattern>/employee/create</url-pattern>
@@ -79,5 +95,21 @@
     <servlet-mapping>
         <servlet-name>ScheduleCampaignWS1List</servlet-name>
         <url-pattern>/scheduleemployee/listws1</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ScheduleCampaignWS2List</servlet-name>
+        <url-pattern>/scheduleemployee/listws2</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ScheduleCampaignWS4List</servlet-name>
+        <url-pattern>/scheduleemployee/listws4</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ScheduleCampaignWS3List</servlet-name>
+        <url-pattern>/scheduleemployee/listws3</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ScheduleCampaignWS6List</servlet-name>
+        <url-pattern>/scheduleemployee/listws6</url-pattern>
     </servlet-mapping>
 </web-app>
