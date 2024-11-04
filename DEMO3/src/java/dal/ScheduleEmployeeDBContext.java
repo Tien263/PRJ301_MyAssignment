@@ -4,6 +4,8 @@
  */
 package dal;
 
+import entity.Employee;
+import entity.schedule.ScheduleCampaign;
 import entity.schedule.Schedule_Detail;
 import java.util.ArrayList;
 import java.sql.*;
@@ -39,7 +41,7 @@ public class ScheduleEmployeeDBContext extends DBContext<Schedule_Detail> {
         }
 
     }
-    
+
     public void insertMultipleAssignments(int scid, List<Integer> eids, List<Integer> quantities) {
         String sql = "INSERT INTO [Schedule_Detail]\n"
                 + "           ([scid]\n"
@@ -100,6 +102,52 @@ public class ScheduleEmployeeDBContext extends DBContext<Schedule_Detail> {
     @Override
     public Schedule_Detail get(int id) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public ArrayList<Schedule_Detail> searchQuantityToDo(int eid, Date date, int did) {
+
+        ArrayList<Schedule_Detail> sds = new ArrayList<>();
+        PreparedStatement command = null;
+
+        String sql = "select e.eid, e.ename ,sc.date, SUM(sd.quatity) as QuantityToDo from Schedule_Detail sd \n"
+                + "inner join ScheduleCampaiqn sc on sd.scid = sc.scid\n"
+                + "inner join Employee e on e.eid = sd.eid\n"
+                + "where e.eid = ? and sc.date like ? and e.did = ?\n"
+                + "Group by e.eid, e.ename,sc.date ;";
+        
+        try {
+            command = connection.prepareStatement(sql);
+            command.setInt(1, eid);
+            command.setDate(2, date);
+            command.setInt(3, did);
+            ResultSet rs = command.executeQuery();
+            while (rs.next()) {                
+                Schedule_Detail sd = new Schedule_Detail();
+                
+                sd.setQuatity(rs.getInt("QuantityToDo"));
+                
+                Employee e = new Employee();
+                e.setId(rs.getInt("eid"));
+                e.setName(rs.getNString("ename"));
+                sd.setEmps(e);
+                
+                ScheduleCampaign sc = new ScheduleCampaign();
+                sc.setDate(rs.getDate("date"));
+                sd.setSchCamps(sc);
+                
+                sds.add(sd);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ScheduleEmployeeDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                command.close();
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(dal.DepartmentDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return sds;
     }
 
 }

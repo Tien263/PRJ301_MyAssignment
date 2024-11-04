@@ -106,9 +106,21 @@
             input[type="submit"]:hover {
                 background-color: #218838;
             }
+            .account-info {
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+                font-size: 14px;
+                color: #666;
+                margin-bottom: 10px;
+            }
         </style>
     </head>
     <body>
+        <div class="account-info">
+            Xin chào, <strong>Username</strong>
+            <a href="../logout" class="logout-button">Đăng xuất</a>
+        </div>
         <!-- Header -->
         <div class="header">
             Human Resources Department - Add Employee

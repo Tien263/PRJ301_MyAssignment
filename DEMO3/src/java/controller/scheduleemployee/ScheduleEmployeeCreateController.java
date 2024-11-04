@@ -9,7 +9,6 @@ import dal.ScheduleCampaiqnDBContext;
 import dal.ScheduleEmployeeDBContext;
 import entity.Employee;
 import entity.schedule.ScheduleCampaign;
-import entity.schedule.Schedule_Detail;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -113,6 +112,11 @@ public class ScheduleEmployeeCreateController extends HttpServlet {
         // Sử dụng hàm insertMultipleAssignments để lưu tất cả nhân viên cùng một lúc
         sedb.insertMultipleAssignments(scid, listEids, listQuantities);
 
+        // Quay lại 2 trang trước bằng JavaScript
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        out.println("<script>history.go(-2);</script>");
+        out.close();
     }
 
     /**

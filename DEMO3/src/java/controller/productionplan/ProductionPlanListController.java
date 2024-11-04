@@ -31,12 +31,8 @@ public class ProductionPlanListController extends BaseRBACController{
 
         // Lấy thời gian hiện tại
         Date now = new Date();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String formattedDate = dateFormat.format(now);
-        
-        // Thêm danh sách pcs và thời gian hiện tại vào request
         request.setAttribute("pcs", pcs);
-        request.setAttribute("timeNow", formattedDate);
+        request.setAttribute("timeNow", now);
 
         // Chuyển tiếp tới JSP
         request.getRequestDispatcher("../view/productionplan/productionPlanList.jsp").forward(request, response);

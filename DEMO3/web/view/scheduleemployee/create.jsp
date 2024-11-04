@@ -68,10 +68,21 @@
             .btn:hover {
                 background-color: #45a049;
             }
+            .account-info {
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+                font-size: 14px;
+                color: #666;
+                margin-bottom: 10px;
+            }
         </style>
     </head>
     <body>
-
+        <div class="account-info">
+            Xin chào, <strong>Username</strong>
+            <a href="../logout" class="logout-button">Đăng xuất</a>
+        </div>
         <!-- Schedule Information -->
         <div class="schedule-info">
             <h2>Schedule Information </h2>

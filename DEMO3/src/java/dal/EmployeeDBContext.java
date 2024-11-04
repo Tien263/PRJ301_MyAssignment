@@ -233,7 +233,7 @@ public class EmployeeDBContext extends DBContext<Employee> {
         PreparedStatement command = null;
         try {
             String sql = "select e.eid, e.ename , e.salary_band, e.gender, e.address, e.dob, d.dname from Employee e inner join Department d on e.did = d.did\n"
-                    + "Where e.status = 'True';";
+                    + "Where e.status = 'True'";
 
             command = connection.prepareStatement(sql);
             ResultSet rs = command.executeQuery();
@@ -327,7 +327,7 @@ public class EmployeeDBContext extends DBContext<Employee> {
         ArrayList<Employee> emps = new ArrayList<>();
         PreparedStatement command = null;
         try {
-            String sql = "select eid , ename from Employee \n"
+            String sql = "select did ,eid , ename from Employee \n"
                     + "Where did = ? and status = 1";
 
             command = connection.prepareStatement(sql);
@@ -337,6 +337,9 @@ public class EmployeeDBContext extends DBContext<Employee> {
                 Employee emp = new Employee();
                 emp.setId(rs.getInt("eid"));
                 emp.setName(rs.getNString("ename"));
+                Department d = new Department();
+                d.setId(id);
+                emp.setDept(d);
 
                 emps.add(emp);
             }

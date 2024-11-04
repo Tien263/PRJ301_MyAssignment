@@ -56,6 +56,14 @@
         <servlet-name>ScheduleCampaignWS6List</servlet-name>
         <servlet-class>controller.scheduleemployee.ScheduleCampaignWS6List</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ScheduleEmployeeFilterController</servlet-name>
+        <servlet-class>controller.scheduleemployee.ScheduleEmployeeFilterController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LogoutController</servlet-name>
+        <servlet-class>controller.accesscontrol.LogoutController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>EmployeeCreateController</servlet-name>
         <url-pattern>/employee/create</url-pattern>
@@ -111,5 +119,13 @@
     <servlet-mapping>
         <servlet-name>ScheduleCampaignWS6List</servlet-name>
         <url-pattern>/scheduleemployee/listws6</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ScheduleEmployeeFilterController</servlet-name>
+        <url-pattern>/scheduleemployee/filter</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LogoutController</servlet-name>
+        <url-pattern>/logout</url-pattern>
     </servlet-mapping>
 </web-app>

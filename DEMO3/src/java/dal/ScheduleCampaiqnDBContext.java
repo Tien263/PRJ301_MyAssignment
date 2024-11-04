@@ -104,7 +104,37 @@ public class ScheduleCampaiqnDBContext extends DBContext<ScheduleCampaign> {
 
     @Override
     public ArrayList<ScheduleCampaign> list() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        ArrayList<ScheduleCampaign> scs = new ArrayList<>();
+        PreparedStatement command = null;
+        
+        
+        try {
+            String sql = "Select scid, pcid, date, shift,quantity from ScheduleCampaiqn";
+            command = connection.prepareStatement(sql);
+            ResultSet rs = command.executeQuery();
+            while (true) {                
+                ScheduleCampaign sc = new ScheduleCampaign();
+                sc.setId(rs.getInt("scid"));
+                
+                PlanCampaiqn pc = new PlanCampaiqn();
+                sc.setPlcampain(pc);
+                
+                sc.setDate(rs.getDate("date"));
+                sc.setQuantity(rs.getInt("quantity"));
+                
+                scs.add(sc);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ScheduleCampaiqnDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                command.close();
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(EmployeeDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return scs;
     }
 
     public ArrayList<ScheduleCampaign> get(String department) {

@@ -144,6 +144,14 @@
         .btn-schedule {
             background-color: #f39c12;
         }
+        .account-info {
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+                font-size: 14px;
+                color: #666;
+                margin-bottom: 10px;
+            }
         .btn-schedule:hover {
             background-color: #e67e22;
             transform: translateY(-2px);
@@ -155,11 +163,14 @@
     </style>
 </head>
 <body>
+    <div class="account-info">
+            Xin chào, <strong>Username</strong>
+            <a href="../logout" class="logout-button">Đăng xuất</a>
+        </div>
     <!-- Thanh điều hướng -->
     <div class="header-bar">
-        <a href="../login">Login</a>
+        <a href="../login">Back</a>
         <span class="header-title">Production Dashboard & Schedule Details</span>
-        <a href="../schedule/create">Schedule Campaign</a>
     </div>
 
     <!-- Container chính -->

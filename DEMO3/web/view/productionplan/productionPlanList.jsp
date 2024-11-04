@@ -5,6 +5,7 @@
 --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="/WEB-INF/mytags.tld" prefix="mytag" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -103,6 +104,14 @@
             .btn-delete:hover {
                 background-color: #d32f2f;
             }
+            .account-info {
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+                font-size: 14px;
+                color: #666;
+                margin-bottom: 10px;
+            }
         </style>
         <script>
             function removeEmployee(id) {
@@ -114,6 +123,10 @@
         </script>
     </head>
     <body>
+        <div class="account-info">
+            Xin chào, <strong>Username</strong>
+            <a href="../logout" class="logout-button">Đăng xuất</a>
+        </div>
         <div class="container">
             <h1>Danh sách Plan Campaign</h1>
 
@@ -152,7 +165,10 @@
                             <td>${c.plan.start}</td>
                             <td>${c.product.name}</td>
                             <td>${c.quantity}</td>
-                            <td>${requestScope.timeNow}</td>
+                            <td>
+                                <!-- Sử dụng Custom Tag để định dạng ngày tháng -->
+                                <mytag:ToVietnameseDate value="${requestScope.timeNow}" />
+                            </td>
                             <td>
                                 <div class="btn-container">
                                     <a href="../schedule/create?plid=${c.plan.id}&pcid=${c.id}" class="btn">Schedule Campaign</a>
